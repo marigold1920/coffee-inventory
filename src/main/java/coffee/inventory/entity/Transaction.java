@@ -14,6 +14,40 @@ import java.util.Set;
 @Table(name = "transaction")
 public class Transaction implements Serializable {
 
+    enum TransactionType {
+
+        RECEIPT("Receipt") {
+            @Override
+            int getValue() {
+                return 1;
+            }
+        },
+        DELIVERY("Delivery") {
+            @Override
+            int getValue() {
+                return 2;
+            }
+        },
+        STOCKTAKING("Stocktaking") {
+            @Override
+            int getValue() {
+                return 3;
+            }
+        };
+
+        private String name;
+
+        private TransactionType(String name) {
+            this.name = name;
+        }
+
+        abstract int getValue();
+
+        public String getName() {
+            return name;
+        }
+    }
+
     private static final long serialVersionUID = 1L;
 
     @Id
@@ -38,5 +72,5 @@ public class Transaction implements Serializable {
     @OneToMany(mappedBy = "transaction", cascade = { CascadeType.MERGE })
     private Set<TransactionDetail> transactionDetails;
 
-    private int type;
+    private TransactionType type;
 }
