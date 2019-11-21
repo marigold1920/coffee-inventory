@@ -23,11 +23,11 @@ public class Transaction implements Serializable {
 
     @ManyToOne(fetch = FetchType.LAZY, cascade = { CascadeType.MERGE })
     @JoinColumn(name = "place_from", referencedColumnName = "id")
-    private WareHouse fromWareHouse;
+    private Warehouse fromWareHouse;
 
     @ManyToOne(fetch = FetchType.LAZY, cascade = { CascadeType.MERGE })
     @JoinColumn(name = "place_to", referencedColumnName = "id")
-    private WareHouse toWareHouse;
+    private Warehouse toWareHouse;
 
     @Column(name = "date_create")
     private LocalDate dateCreate;

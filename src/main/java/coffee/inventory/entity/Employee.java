@@ -32,7 +32,7 @@ public class Employee implements Serializable {
 
     @ManyToOne(fetch = FetchType.LAZY, cascade = { CascadeType.MERGE })
     @JoinColumn(name = "warehouse_id", referencedColumnName = "id")
-    private WareHouse wareHouse;
+    private Warehouse wareHouse;
 
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "account_id", referencedColumnName = "id")

@@ -23,10 +23,10 @@ public class Item implements Serializable {
 
     @ManyToOne(fetch = FetchType.LAZY, cascade = { CascadeType.MERGE })
     @JoinColumn(name = "supplier_id", referencedColumnName = "id")
-    private WareHouse supplier;
+    private Warehouse supplier;
 
     @OneToMany(mappedBy = "wareHouse", cascade = { CascadeType.MERGE })
-    private Set<WareHouseItem> wareHouseItems;
+    private Set<WarehouseItem> wareHouseItems;
 
     @OneToMany(mappedBy = "item", cascade = { CascadeType.MERGE })
     private Set<TransactionDetail> transactionDetails;

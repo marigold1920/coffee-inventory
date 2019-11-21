@@ -11,7 +11,7 @@ import java.util.Set;
 @Entity
 @Getter
 @Table(name = "warehouse")
-public class WareHouse implements Serializable {
+public class Warehouse implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
@@ -26,16 +26,16 @@ public class WareHouse implements Serializable {
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "address_id", referencedColumnName = "id")
     private Address address;
-    
+
     @OneToMany(mappedBy = "supplier", cascade = { CascadeType.MERGE })
     private Set<Item> items;
-    
+
     @OneToMany(mappedBy = "wareHouse", cascade = { CascadeType.MERGE })
-    private Set<WareHouseItem> wareHouseItems;
-    
+    private Set<WarehouseItem> wareHouseItems;
+
     @OneToMany(mappedBy = "fromWareHouse", cascade = { CascadeType.MERGE })
     private Set<Transaction> transactionSend;
-    
+
     @OneToMany(mappedBy = "toWareHouse", cascade = { CascadeType.MERGE })
     private Set<Transaction> transactionReceive;
 

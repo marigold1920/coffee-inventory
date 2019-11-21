@@ -20,7 +20,7 @@ public class Address implements Serializable {
     private Employee employee;
 
     @OneToOne(mappedBy = "address")
-    private WareHouse wareHouse;
+    private Warehouse wareHouse;
 
     @Column(name = "name")
     private String name;
