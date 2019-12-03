@@ -14,7 +14,7 @@ public class Address implements Serializable {
     @Id
     @GenericGenerator(name = "generator", strategy = "increment")
     @GeneratedValue(generator = "generator")
-    private int id;
+    private Integer id;
 
     @OneToOne(mappedBy = "address")
     private Employee employee;

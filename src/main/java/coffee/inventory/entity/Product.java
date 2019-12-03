@@ -15,21 +15,24 @@ public class Product implements Serializable {
     @Id
     @GenericGenerator(name = "generator", strategy = "increment")
     @GeneratedValue(generator = "generator")
-    private int id;
+    private Integer id;
 
     @Column(name = "display_name")
     private String name;
     @Column(name = "code_product")
     private String code;
 
-    @ManyToOne(fetch = FetchType.LAZY, cascade = { CascadeType.MERGE })
+    @Column(name = "price")
+    private Double price;
+
+    @ManyToOne(fetch = FetchType.LAZY, cascade = { CascadeType.ALL })
     @JoinColumn(name = "unit_id", referencedColumnName = "id")
     private Unit unit;
 
-    @ManyToOne(fetch = FetchType.LAZY, cascade = { CascadeType.MERGE })
+    @ManyToOne(fetch = FetchType.LAZY, cascade = { CascadeType.ALL })
     @JoinColumn(name = "category_id", referencedColumnName = "id")
     private Category category;
 
-    @OneToMany(mappedBy = "product", cascade = { CascadeType.MERGE })
+    @OneToMany(mappedBy = "product", cascade = { CascadeType.ALL })
     private Set<Item> items;
 }

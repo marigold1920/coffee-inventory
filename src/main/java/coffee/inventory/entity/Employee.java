@@ -15,7 +15,7 @@ public class Employee implements Serializable {
     @Id
     @GenericGenerator(name = "generator", strategy = "increment")
     @GeneratedValue(generator = "generator")
-    private int id;
+    private Integer id;
 
     @Column(name = "first_name")
     private String firstName;

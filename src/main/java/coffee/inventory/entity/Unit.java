@@ -11,7 +11,7 @@ public class Unit {
     @Id
     @GenericGenerator(name = "generator", strategy = "increment")
     @GeneratedValue(generator = "generator")
-    private int id;
+    private Integer id;
 
     @OneToMany(mappedBy = "unit", cascade = { CascadeType.MERGE })
     private Set<Product> products;

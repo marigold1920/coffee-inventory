@@ -15,7 +15,7 @@ public class Category implements Serializable {
     @Id
     @GenericGenerator(name = "generator", strategy = "increment")
     @GeneratedValue(generator = "generator")
-    private int id;
+    private Integer id;
 
     @OneToMany(mappedBy = "category", cascade = { CascadeType.MERGE })
     private Set<Product> products;
