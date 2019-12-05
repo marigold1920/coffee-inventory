@@ -2,7 +2,10 @@ package coffee.inventory.entity;
 
 import org.hibernate.annotations.GenericGenerator;
 
-import lombok.Getter;
+import coffee.inventory.enumeration.TransactionType;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -10,43 +13,11 @@ import java.time.LocalDate;
 import java.util.Set;
 
 @Entity
-@Getter
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
 @Table(name = "transaction")
 public class Transaction implements Serializable {
-
-    enum TransactionType {
-
-        RECEIPT("Receipt") {
-            @Override
-            int getValue() {
-                return 1;
-            }
-        },
-        DELIVERY("Delivery") {
-            @Override
-            int getValue() {
-                return 2;
-            }
-        },
-        STOCKTAKING("Stocktaking") {
-            @Override
-            int getValue() {
-                return 3;
-            }
-        };
-
-        private String name;
-
-        private TransactionType(String name) {
-            this.name = name;
-        }
-
-        abstract int getValue();
-
-        public String getName() {
-            return name;
-        }
-    }
 
     private static final long serialVersionUID = 1L;
 
@@ -72,5 +43,6 @@ public class Transaction implements Serializable {
     @OneToMany(mappedBy = "transaction", cascade = { CascadeType.MERGE })
     private Set<TransactionDetail> transactionDetails;
 
+    @Column(name = "type")
     private TransactionType type;
 }

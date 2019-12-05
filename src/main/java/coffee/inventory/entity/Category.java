@@ -2,6 +2,8 @@ package coffee.inventory.entity;
 
 import org.hibernate.annotations.GenericGenerator;
 
+import lombok.Getter;
+
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Set;
@@ -19,4 +21,8 @@ public class Category implements Serializable {
 
     @OneToMany(mappedBy = "category", cascade = { CascadeType.MERGE })
     private Set<Product> products;
+
+    @Column(name = "name")
+    @Getter
+    private String name;
 }

@@ -18,6 +18,7 @@ public class Warehouse implements Serializable {
     @Id
     @GenericGenerator(name = "generator", strategy = "increment")
     @GeneratedValue(generator = "generator")
+    @Getter
     private Integer id;
 
     @Column(name = "display_name")

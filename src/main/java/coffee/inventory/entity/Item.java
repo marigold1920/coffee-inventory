@@ -2,6 +2,8 @@ package coffee.inventory.entity;
 
 import org.hibernate.annotations.GenericGenerator;
 
+import lombok.Getter;
+
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Set;
@@ -15,6 +17,7 @@ public class Item implements Serializable {
     @Id
     @GenericGenerator(name = "generator", strategy = "increment")
     @GeneratedValue(generator = "generator")
+    @Getter
     private Integer id;
 
     @ManyToOne(fetch = FetchType.LAZY, cascade = { CascadeType.MERGE })

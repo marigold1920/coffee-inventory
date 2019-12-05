@@ -2,6 +2,8 @@ package coffee.inventory.entity;
 
 import org.hibernate.annotations.GenericGenerator;
 
+import lombok.Getter;
+
 import javax.persistence.*;
 import java.util.Set;
 
@@ -17,5 +19,6 @@ public class Unit {
     private Set<Product> products;
 
     @Column(name = "name")
+    @Getter
     private String name;
 }
