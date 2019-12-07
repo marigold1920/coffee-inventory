@@ -1,7 +1,5 @@
 package coffee.inventory.builder;
 
-import java.util.HashSet;
-
 import coffee.inventory.entity.Transaction;
 import coffee.inventory.helper.ServiceHelper;
 
@@ -10,7 +8,35 @@ public class TransactionBuilder {
     protected ServiceHelper helper = ServiceHelper.getHelper();
 
     public TransactionBuilder() {
-        transaction = Transaction.builder().transactionDetails(new HashSet<>()).build();
+        transaction = Transaction.builder().build();
+    }
+
+    /**
+     * 
+     * @return
+     */
+    public ItemBuilder item() {
+
+        return new ItemBuilder();
+    }
+
+    /**
+     * 
+     * @return
+     */
+    public WarehouseItemBuilder warehouseItem() {
+
+        return new WarehouseItemBuilder();
+    }
+
+    /**
+     * 
+     * @param itemAdapters
+     * @return
+     */
+    public TransactionDetailsBuilder details() {
+
+        return new TransactionDetailsBuilder();
     }
 
     public Transaction build() {

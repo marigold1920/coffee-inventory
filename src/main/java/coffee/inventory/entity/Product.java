@@ -2,11 +2,19 @@ package coffee.inventory.entity;
 
 import org.hibernate.annotations.GenericGenerator;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Set;
 
 @Entity
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
 @Table(name = "product")
 public class Product implements Serializable {
 
@@ -14,14 +22,13 @@ public class Product implements Serializable {
 
     @Id
     @GenericGenerator(name = "generator", strategy = "increment")
-    @GeneratedValue(generator = "generator")
     private Integer id;
 
     @Column(name = "display_name")
     private String name;
-    @Column(name = "code_product")
-    private String code;
-
+    @Column(name = "product_code")
+    @Getter
+    private String productCode;
     @Column(name = "price")
     private Double price;
 

@@ -9,13 +9,14 @@ import lombok.Getter;
 
 @Getter
 public class TransactionAdapter {
+
     private int source;
     private int destination;
     private Collection<ItemAdapter> items;
     private TransactionType type;
 
-    public static Transaction build() {
+    public Transaction build() {
 
-        return new TransactionBuilder().build();
+        return new TransactionBuilder().item().make(items).warehouseItem().make(items).details().make(items).build();
     }
 }

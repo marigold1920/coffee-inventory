@@ -6,6 +6,7 @@ import coffee.inventory.enumeration.TransactionType;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -41,6 +42,7 @@ public class Transaction implements Serializable {
     private LocalDate dateReceive;
 
     @OneToMany(mappedBy = "transaction", cascade = { CascadeType.MERGE })
+    @Setter
     private Set<TransactionDetail> transactionDetails;
 
     @Column(name = "type")

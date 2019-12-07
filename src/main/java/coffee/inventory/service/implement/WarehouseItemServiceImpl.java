@@ -18,9 +18,9 @@ public class WarehouseItemServiceImpl implements WarehouseItemService {
         this.warehouseItemRepository = warehouseItemRepository;
     }
 
-    public Collection<WarehouseItem> findWarehouseItemsById(Integer... warehouseItemIds) {
+    public Collection<WarehouseItem> findWarehouseItemsById(int warehouseId, Integer... warehouseItemIds) {
 
-        return warehouseItemRepository.findAllById(Arrays.asList(warehouseItemIds));
+        return warehouseItemRepository.findAllByItemId(warehouseId, Arrays.asList(warehouseItemIds));
     }
 
 }

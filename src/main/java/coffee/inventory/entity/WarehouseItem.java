@@ -2,12 +2,19 @@ package coffee.inventory.entity;
 
 import org.hibernate.annotations.GenericGenerator;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import javax.persistence.*;
 import java.io.Serializable;
 
 @Entity
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
 @Table(name = "warehouse_item")
 public class WarehouseItem implements Serializable {
 
@@ -21,7 +28,7 @@ public class WarehouseItem implements Serializable {
 
     @ManyToOne(fetch = FetchType.LAZY, cascade = { CascadeType.MERGE })
     @JoinColumn(name = "warehouse_id", referencedColumnName = "id")
-    private Warehouse wareHouse;
+    private Warehouse warehouse;
 
     @ManyToOne(fetch = FetchType.LAZY, cascade = { CascadeType.MERGE })
     @JoinColumn(name = "item_id", referencedColumnName = "id")
@@ -29,5 +36,7 @@ public class WarehouseItem implements Serializable {
     private Item item;
 
     @Column(name = "quantity")
+    @Setter
+    @Getter
     private int quantity;
 }
