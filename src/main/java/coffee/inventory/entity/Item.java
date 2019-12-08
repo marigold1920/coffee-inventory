@@ -27,23 +27,23 @@ public class Item implements Serializable {
     @Getter
     private Integer id;
 
-    @ManyToOne(fetch = FetchType.LAZY, cascade = { CascadeType.MERGE })
+    @ManyToOne(fetch = FetchType.LAZY, cascade = { CascadeType.PERSIST })
     @JoinColumn(name = "product_id", referencedColumnName = "id")
     @Getter
     private Product product;
 
-    @ManyToOne(fetch = FetchType.LAZY, cascade = { CascadeType.MERGE })
+    @ManyToOne(fetch = FetchType.LAZY, cascade = { CascadeType.PERSIST, CascadeType.MERGE })
     @JoinColumn(name = "supplier_id", referencedColumnName = "id")
     @Setter
     private Warehouse supplier;
 
-    @OneToMany(mappedBy = "wareHouse", cascade = { CascadeType.MERGE })
+    @OneToMany(mappedBy = "warehouse", cascade = { CascadeType.PERSIST })
     private Set<WarehouseItem> warehouseItems;
 
-    @OneToMany(mappedBy = "item", cascade = { CascadeType.MERGE })
+    @OneToMany(mappedBy = "item", cascade = { CascadeType.PERSIST })
     private Set<TransactionDetail> transactionDetails;
 
-    // public void addWarehouseItem(WarehouseItem warehouseItem) {
-    //     warehouseItems.add(warehouseItem);
-    // }
+    public void addWarehouseItem(WarehouseItem warehouseItem) {
+        warehouseItems.add(warehouseItem);
+    }
 }

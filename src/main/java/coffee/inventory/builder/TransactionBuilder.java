@@ -1,14 +1,17 @@
 package coffee.inventory.builder;
 
+import java.time.LocalDate;
+
 import coffee.inventory.entity.Transaction;
+import coffee.inventory.enumeration.TransactionType;
 import coffee.inventory.helper.ServiceHelper;
 
 public class TransactionBuilder {
     protected Transaction transaction;
-    protected ServiceHelper helper = ServiceHelper.getHelper();
+    protected ServiceHelper helper = ServiceHelper.getService();
 
     public TransactionBuilder() {
-        transaction = Transaction.builder().build();
+        transaction = Transaction.builder().dateCreate(LocalDate.now()).status("RECEIPTED").type(TransactionType.RECEIPT).build();
     }
 
     /**

@@ -29,10 +29,12 @@ public class Transaction implements Serializable {
 
     @ManyToOne(fetch = FetchType.LAZY, cascade = { CascadeType.MERGE })
     @JoinColumn(name = "place_from", referencedColumnName = "id")
+    @Setter
     private Warehouse fromWareHouse;
 
     @ManyToOne(fetch = FetchType.LAZY, cascade = { CascadeType.MERGE })
     @JoinColumn(name = "place_to", referencedColumnName = "id")
+    @Setter
     private Warehouse toWareHouse;
 
     @Column(name = "date_create")
@@ -41,7 +43,10 @@ public class Transaction implements Serializable {
     @Column(name = "date_receive")
     private LocalDate dateReceive;
 
-    @OneToMany(mappedBy = "transaction", cascade = { CascadeType.MERGE })
+    @Column(name = "status")
+    private String status;
+
+    @OneToMany(mappedBy = "transaction", cascade = { CascadeType.PERSIST })
     @Setter
     private Set<TransactionDetail> transactionDetails;
 

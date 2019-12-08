@@ -23,11 +23,11 @@ public class TransactionDetail implements Serializable {
     @GeneratedValue(generator = "generator")
     private Integer id;
 
-    @ManyToOne(fetch = FetchType.LAZY, cascade = { CascadeType.MERGE })
+    @ManyToOne(fetch = FetchType.LAZY, cascade = { CascadeType.PERSIST })
     @JoinColumn(name = "transaction_id", referencedColumnName = "id")
     private Transaction transaction;
 
-    @ManyToOne(fetch = FetchType.LAZY, cascade = { CascadeType.MERGE })
+    @ManyToOne(fetch = FetchType.LAZY, cascade = { CascadeType.PERSIST })
     @JoinColumn(name = "item_id", referencedColumnName = "id")
     private Item item;
 

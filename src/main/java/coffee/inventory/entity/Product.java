@@ -22,6 +22,7 @@ public class Product implements Serializable {
 
     @Id
     @GenericGenerator(name = "generator", strategy = "increment")
+    @GeneratedValue(generator = "generator")
     private Integer id;
 
     @Column(name = "display_name")
@@ -40,6 +41,6 @@ public class Product implements Serializable {
     @JoinColumn(name = "category_id", referencedColumnName = "id")
     private Category category;
 
-    @OneToMany(mappedBy = "product", cascade = { CascadeType.ALL })
+    @OneToMany(mappedBy = "product", cascade = { CascadeType.PERSIST })
     private Set<Item> items;
 }

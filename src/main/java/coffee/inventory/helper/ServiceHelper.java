@@ -1,5 +1,7 @@
 package coffee.inventory.helper;
 
+import java.util.Collection;
+import java.util.HashSet;
 import java.util.Map;
 import java.util.function.Function;
 import java.util.stream.Collectors;
@@ -11,11 +13,6 @@ import coffee.inventory.entity.Product;
 import coffee.inventory.entity.Unit;
 import coffee.inventory.entity.Warehouse;
 import coffee.inventory.entity.WarehouseItem;
-import coffee.inventory.service.CategoryService;
-import coffee.inventory.service.ItemService;
-import coffee.inventory.service.UnitService;
-import coffee.inventory.service.WarehouseItemService;
-import coffee.inventory.service.WarehouseService;
 
 public final class ServiceHelper {
     private static ServiceHelper helper;
@@ -28,7 +25,7 @@ public final class ServiceHelper {
     private ServiceHelper() {
     };
 
-    public static synchronized ServiceHelper getHelper() {
+    public static synchronized ServiceHelper getService() {
         if (helper == null)
             helper = new ServiceHelper();
 
@@ -40,9 +37,10 @@ public final class ServiceHelper {
      * @param service
      * @param warehouseIds
      */
-    public void initWarehouses(WarehouseService service, Integer... warehouseIds) {
-        warehouses = service.findWarehousesById(warehouseIds).stream()
-                .collect(Collectors.toMap(Warehouse::getId, Function.identity()));
+    public ServiceHelper initWarehouses(Collection<Warehouse> initiation) {
+        warehouses = initiation.stream().collect(Collectors.toMap(Warehouse::getId, Function.identity()));
+
+        return this;
     }
 
     /**
@@ -50,9 +48,10 @@ public final class ServiceHelper {
      * @param service
      * @param itemIds
      */
-    public void initItem(ItemService service, Integer... itemIds) {
-        items = service.findAllItemsById(itemIds).stream()
+    public ServiceHelper initItems(Collection<Item> initiation) {
+        items = initiation.stream()
                 .collect(Collectors.toMap(i -> i.getProduct().getProductCode(), Function.identity()));
+        return this;
     }
 
     /**
@@ -60,26 +59,31 @@ public final class ServiceHelper {
      * @param service
      * @param warehouseItemIds
      */
-    public void initWarehouseItems(WarehouseItemService service, int warehouseId, Integer... warehouseItemIds) {
-        warehouseItems = service.findWarehouseItemsById(warehouseId, warehouseItemIds).stream()
+    public ServiceHelper initWarehouseItems(Collection<WarehouseItem> initiation) {
+        warehouseItems = initiation.stream()
                 .collect(Collectors.toMap(i -> i.getItem().getProduct().getProductCode(), Function.identity()));
+
+        return this;
     }
 
     /**
      * 
      * @param service
      */
-    public void initUnit(UnitService service) {
-        units = service.findAllUnits().stream().collect(Collectors.toMap(Unit::getName, Function.identity()));
+    public ServiceHelper initUnits(Collection<Unit> initiation) {
+        units = initiation.stream().collect(Collectors.toMap(Unit::getName, Function.identity()));
+
+        return this;
     }
 
     /**
      * 
      * @param service
      */
-    public void initCategory(CategoryService service) {
-        categories = service.findAllCategories().stream()
-                .collect(Collectors.toMap(Category::getName, Function.identity()));
+    public ServiceHelper initCategories(Collection<Category> initiation) {
+        categories = initiation.stream().collect(Collectors.toMap(Category::getName, Function.identity()));
+
+        return this;
     }
 
     /**
@@ -102,7 +106,7 @@ public final class ServiceHelper {
         var item = getItem(itemAdapter);
         if (!warehouseItems.containsKey(key)) {
             var warehouseItem = WarehouseItem.builder().item(item).quantity(itemAdapter.getQuantity()).build();
-            // item.addWarehouseItem(warehouseItem);
+            item.addWarehouseItem(warehouseItem);
             warehouseItems.put(item.getProduct().getProductCode(), warehouseItem);
         } else {
             var warehouseItem = warehouseItems.get(key);
@@ -119,10 +123,13 @@ public final class ServiceHelper {
      */
     public Item getItem(ItemAdapter itemAdapter) {
         var key = itemAdapter.getProductCode();
+        var supplier = getWarehouse(itemAdapter.getId());
         if (!items.containsKey(key)) {
-            var product = Product.builder().productCode(itemAdapter.getProductCode()).price(itemAdapter.getPrice())
-                    .unit(getUnit(itemAdapter.getUnit())).category(getCategory(itemAdapter.getCategory())).build();
-            var item = Item.builder().product(product).supplier(getWarehouse(itemAdapter.getSupplier())).build();
+            var product = Product.builder().name(itemAdapter.getName()).productCode(itemAdapter.getProductCode())
+                    .price(itemAdapter.getPrice()).unit(getUnit(itemAdapter.getUnit()))
+                    .category(getCategory(itemAdapter.getCategory())).build();
+            var item = Item.builder().product(product).supplier(supplier)
+                    .warehouseItems(new HashSet<>()).build();
             items.put(item.getProduct().getProductCode(), item);
         }
 

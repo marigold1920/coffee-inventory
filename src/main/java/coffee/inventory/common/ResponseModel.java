@@ -1,6 +1,7 @@
 package coffee.inventory.common;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Collection;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -21,14 +22,23 @@ public class ResponseModel implements Serializable {
     @JsonIgnore
     private Collection<ResponseStatus> statuses;
 
+    public ResponseModel() {
+        statuses = new ArrayList<>();
+    }
+
     public void addStatus(ResponseStatus status) {
         statuses.add(status);
     }
 
+    public void addData(Object object) {
+        responseObject = object;
+    }
+ 
     public ResponseModel finishRequest() {
         message = statuses.stream()
             .map(ResponseStatus::getValue)
-            .reduce("", String::concat);
+                .reduce("", String::concat);
+        status = message.isBlank() ? "SUCCESS" : "BAD_DATA";
             
         return this;
     }

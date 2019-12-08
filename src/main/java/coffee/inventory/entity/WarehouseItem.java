@@ -28,9 +28,10 @@ public class WarehouseItem implements Serializable {
 
     @ManyToOne(fetch = FetchType.LAZY, cascade = { CascadeType.MERGE })
     @JoinColumn(name = "warehouse_id", referencedColumnName = "id")
+    @Setter
     private Warehouse warehouse;
 
-    @ManyToOne(fetch = FetchType.LAZY, cascade = { CascadeType.MERGE })
+    @ManyToOne(fetch = FetchType.LAZY, cascade = { CascadeType.PERSIST })
     @JoinColumn(name = "item_id", referencedColumnName = "id")
     @Getter
     private Item item;

@@ -3,6 +3,7 @@ package coffee.inventory.entity;
 import org.hibernate.annotations.GenericGenerator;
 
 import lombok.Getter;
+import lombok.Setter;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -28,17 +29,16 @@ public class Warehouse implements Serializable {
     @JoinColumn(name = "address_id", referencedColumnName = "id")
     private Address address;
 
-    @OneToMany(mappedBy = "supplier", cascade = { CascadeType.MERGE })
+    @OneToMany(mappedBy = "supplier", cascade = { CascadeType.PERSIST, CascadeType.MERGE })
+    @Setter
     private Set<Item> items;
 
-    @OneToMany(mappedBy = "wareHouse", cascade = { CascadeType.MERGE })
-    private Set<WarehouseItem> wareHouseItems;
+    @OneToMany(mappedBy = "warehouse", cascade = { CascadeType.MERGE })
+    private Set<WarehouseItem> warehouseItems;
 
-    @OneToMany(mappedBy = "fromWareHouse", cascade = { CascadeType.MERGE })
-    private Set<Transaction> transactionSend;
+    private String type;
 
-    @OneToMany(mappedBy = "toWareHouse", cascade = { CascadeType.MERGE })
-    private Set<Transaction> transactionReceive;
-
-    private int type;
+    public void addItem(Item item) {
+        items.add(item);
+    }
 }

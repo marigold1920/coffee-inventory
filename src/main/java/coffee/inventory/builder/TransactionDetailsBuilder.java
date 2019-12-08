@@ -1,18 +1,18 @@
 package coffee.inventory.builder;
 
-import java.util.Collection;
 import java.util.stream.Collectors;
 
-import coffee.inventory.adapter.ItemAdapter;
+import coffee.inventory.adapter.TransactionAdapter;
 import coffee.inventory.entity.TransactionDetail;
 
 public class TransactionDetailsBuilder extends TransactionBuilder {
 
-    public TransactionDetailsBuilder make(Collection<ItemAdapter> itemAdapters) {
-        transaction.setTransactionDetails(itemAdapters.stream()
-                .map(i -> TransactionDetail.builder().item(helper.getItem(i)).quantity(i.getQuantity()).build())
+    public TransactionDetailsBuilder make(TransactionAdapter transactionAdapter) {
+        transaction.setTransactionDetails(transactionAdapter.getItems().stream()
+                .map(i -> TransactionDetail.builder().transaction(transaction).item(helper.getItem(i)).quantity(i.getQuantity()).build())
                 .collect(Collectors.toSet()));
-
+        transaction.setFromWareHouse(helper.getWarehouse(transactionAdapter.getSource()));
+        transaction.setToWareHouse(helper.getWarehouse(transactionAdapter.getDestination()));
         return this;
     }
 }

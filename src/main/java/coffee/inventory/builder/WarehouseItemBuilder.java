@@ -1,13 +1,12 @@
 package coffee.inventory.builder;
 
-import java.util.Collection;
-
-import coffee.inventory.adapter.ItemAdapter;
+import coffee.inventory.adapter.TransactionAdapter;
 
 public class WarehouseItemBuilder extends TransactionBuilder {
 
-    public WarehouseItemBuilder make(Collection<ItemAdapter> itemAdapters) {
-        itemAdapters.forEach(helper::getWarehouseItem);
+    public WarehouseItemBuilder make(TransactionAdapter transactionAdapter) {
+        transactionAdapter.getItems().stream().map(helper::getWarehouseItem)
+                .forEach(i -> i.setWarehouse(helper.getWarehouse(transactionAdapter.getDestination())));
 
         return this;
     }

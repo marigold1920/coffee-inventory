@@ -17,6 +17,6 @@ public class TransactionAdapter {
 
     public Transaction build() {
 
-        return new TransactionBuilder().item().make(items).warehouseItem().make(items).details().make(items).build();
+        return new TransactionBuilder().item().make(items).warehouseItem().make(this).details().make(this).build();
     }
 }
