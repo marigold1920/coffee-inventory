@@ -8,7 +8,7 @@ import coffee.inventory.entity.TransactionDetail;
 public class TransactionDetailsBuilder extends TransactionBuilder {
 
     public TransactionDetailsBuilder make(TransactionAdapter transactionAdapter) {
-        transaction.setTransactionDetails(transactionAdapter.getItems().stream()
+        transaction.setTransactionDetails(transactionAdapter.getItems().parallelStream()
                 .map(i -> TransactionDetail.builder().transaction(transaction).item(helper.getItem(i)).quantity(i.getQuantity()).build())
                 .collect(Collectors.toSet()));
         transaction.setFromWareHouse(helper.getWarehouse(transactionAdapter.getSource()));

@@ -50,6 +50,7 @@ public class Transaction implements Serializable {
     @Setter
     private Set<TransactionDetail> transactionDetails;
 
+    @Enumerated(EnumType.STRING)
     @Column(name = "type")
     private TransactionType type;
 }

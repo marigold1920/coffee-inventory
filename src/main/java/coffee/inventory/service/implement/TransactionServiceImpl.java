@@ -67,16 +67,16 @@ public class TransactionServiceImpl implements TransactionService {
          */
         private void init(TransactionAdapter transactionAdapter, ServiceHelper serviceHelper) {
                 Collection<ItemAdapter> items = transactionAdapter.getItems();
-                Supplier<Stream<ItemAdapter>> inititation = () -> items.stream().filter(i -> Objects.isNull(i.getId()));
-                Set<Integer> warehouseIds = inititation.get().map(ItemAdapter::getSupplier).collect(Collectors.toSet());
+                Supplier<Stream<ItemAdapter>> inititation = () -> items.parallelStream().filter(i -> Objects.isNull(i.getId()));
+                Set<Integer> warehouseIds = inititation.get().map(ItemAdapter::getSupplier).distinct().collect(Collectors.toSet());
                 warehouseIds.addAll(Arrays.asList(transactionAdapter.getDestination(), transactionAdapter.getSource()));
 
                 serviceHelper.initUnits(unitRepository.findAllByName(
                                 inititation.get().map(ItemAdapter::getUnit).collect(Collectors.toList())))
                                 .initCategories(categoryRepository.findAllByName(inititation.get()
-                                                .map(ItemAdapter::getCategory).collect(Collectors.toList())))
+                                                .map(ItemAdapter::getCategory).distinct().collect(Collectors.toList())))
                                 .initProducts(productRepository.findAllById(inititation.get()
-                                                .map(ItemAdapter::getProductCode).collect(Collectors.toList())))
+                                                .map(ItemAdapter::getProductCode).distinct().collect(Collectors.toList())))
                                 .initItems(itemRepository.findAllById(
                                                 items.stream().map(ItemAdapter::getId).collect(Collectors.toList())))
                                 .initWarehouseItems(warehouseItemRepository.findAllByItemId(
