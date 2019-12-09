@@ -27,8 +27,8 @@ public class Item implements Serializable {
     @Getter
     private Integer id;
 
-    @ManyToOne(fetch = FetchType.LAZY, cascade = { CascadeType.PERSIST })
-    @JoinColumn(name = "product_id", referencedColumnName = "id")
+    @ManyToOne(fetch = FetchType.LAZY, cascade = { CascadeType.PERSIST, CascadeType.MERGE })
+    @JoinColumn(name = "product_code")
     @Getter
     private Product product;
 

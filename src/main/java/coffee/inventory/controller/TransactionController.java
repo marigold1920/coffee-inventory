@@ -25,7 +25,8 @@ public class TransactionController {
 
     @PostMapping()
     public ResponseModel saveTransaction(@RequestBody TransactionAdapter transactionAdapter) {
+        var response = transactionService.saveTransaction(transactionAdapter);
 
-        return transactionService.saveTransaction(transactionAdapter);
+        return response;
     }
 }

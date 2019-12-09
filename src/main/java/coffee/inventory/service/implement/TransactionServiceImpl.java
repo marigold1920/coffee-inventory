@@ -18,6 +18,7 @@ import coffee.inventory.enumeration.ResponseStatus;
 import coffee.inventory.helper.ServiceHelper;
 import coffee.inventory.repository.CategoryRepository;
 import coffee.inventory.repository.ItemRepository;
+import coffee.inventory.repository.ProductRepository;
 import coffee.inventory.repository.TransactionRepository;
 import coffee.inventory.repository.UnitRepository;
 import coffee.inventory.repository.WarehouseItemRepository;
@@ -33,17 +34,20 @@ public class TransactionServiceImpl implements TransactionService {
         private WarehouseRepository warehouseRepository;
         private ItemRepository itemRepository;
         private WarehouseItemRepository warehouseItemRepository;
+        private ProductRepository productRepository;
 
         @Autowired
         public TransactionServiceImpl(TransactionRepository transactionRepository, UnitRepository unitRepository,
                         CategoryRepository categoryRepository, ItemRepository itemRepository,
-                        WarehouseRepository warehouseRepository, WarehouseItemRepository warehouseItemRepository) {
+                        WarehouseRepository warehouseRepository, WarehouseItemRepository warehouseItemRepository,
+                        ProductRepository productRepository) {
                 this.transactionRepository = transactionRepository;
                 this.unitRepository = unitRepository;
                 this.categoryRepository = categoryRepository;
                 this.warehouseRepository = warehouseRepository;
                 this.itemRepository = itemRepository;
                 this.warehouseItemRepository = warehouseItemRepository;
+                this.productRepository = productRepository;
         }
 
         public ResponseModel saveTransaction(TransactionAdapter transactionAdapter) {
@@ -51,7 +55,7 @@ public class TransactionServiceImpl implements TransactionService {
                 init(transactionAdapter, serviceHelper);
                 ResponseModel response = new ResponseModel();
                 response.addStatus(ResponseStatus.SUCCESS);
-                response.addData(transactionRepository.saveAndFlush(transactionAdapter.build()));
+                transactionRepository.saveAndFlush(transactionAdapter.build());
 
                 return response.finishRequest();
         }
@@ -71,6 +75,8 @@ public class TransactionServiceImpl implements TransactionService {
                                 inititation.get().map(ItemAdapter::getUnit).collect(Collectors.toList())))
                                 .initCategories(categoryRepository.findAllByName(inititation.get()
                                                 .map(ItemAdapter::getCategory).collect(Collectors.toList())))
+                                .initProducts(productRepository.findAllById(inititation.get()
+                                                .map(ItemAdapter::getProductCode).collect(Collectors.toList())))
                                 .initItems(itemRepository.findAllById(
                                                 items.stream().map(ItemAdapter::getId).collect(Collectors.toList())))
                                 .initWarehouseItems(warehouseItemRepository.findAllByItemId(
@@ -78,5 +84,4 @@ public class TransactionServiceImpl implements TransactionService {
                                                 items.stream().map(ItemAdapter::getId).collect(Collectors.toList())))
                                 .initWarehouses(warehouseRepository.findAllById(warehouseIds));
         }
-
 }

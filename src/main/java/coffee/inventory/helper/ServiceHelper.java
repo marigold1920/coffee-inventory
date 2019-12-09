@@ -17,6 +17,7 @@ import coffee.inventory.entity.WarehouseItem;
 public final class ServiceHelper {
     private static ServiceHelper helper;
     private Map<String, WarehouseItem> warehouseItems;
+    private Map<String, Product> products;
     private Map<String, Item> items;
     private Map<Integer, Warehouse> warehouses;
     private Map<String, Unit> units;
@@ -39,6 +40,16 @@ public final class ServiceHelper {
      */
     public ServiceHelper initWarehouses(Collection<Warehouse> initiation) {
         warehouses = initiation.stream().collect(Collectors.toMap(Warehouse::getId, Function.identity()));
+
+        return this;
+    }
+
+    /**
+     * 
+     * @param initiation
+     */
+    public ServiceHelper initProducts(Collection<Product> initiation) {
+        products = initiation.stream().collect(Collectors.toMap(Product::getProductCode, Function.identity()));
 
         return this;
     }
@@ -102,13 +113,17 @@ public final class ServiceHelper {
      * @return
      */
     public WarehouseItem getWarehouseItem(ItemAdapter itemAdapter) {
-        var key = itemAdapter.getProductCode();
-        var item = getItem(itemAdapter);
+        String key = itemAdapter.getProductCode();
+        
         if (!warehouseItems.containsKey(key)) {
-            var warehouseItem = WarehouseItem.builder().item(item).quantity(itemAdapter.getQuantity()).build();
+            Item item = getItem(itemAdapter);
+            //Create new  WarehouseItem
+            WarehouseItem warehouseItem = WarehouseItem.builder().item(item).quantity(itemAdapter.getQuantity()).build();
             item.addWarehouseItem(warehouseItem);
+            //Init WarehouseItem to ServiceHelper
             warehouseItems.put(item.getProduct().getProductCode(), warehouseItem);
         } else {
+            //Update quantity 
             var warehouseItem = warehouseItems.get(key);
             warehouseItem.setQuantity(warehouseItem.getQuantity() + itemAdapter.getQuantity());
         }
@@ -122,18 +137,32 @@ public final class ServiceHelper {
      * @return
      */
     public Item getItem(ItemAdapter itemAdapter) {
-        var key = itemAdapter.getProductCode();
-        var supplier = getWarehouse(itemAdapter.getId());
+        String key = itemAdapter.getProductCode();
+
         if (!items.containsKey(key)) {
-            var product = Product.builder().name(itemAdapter.getName()).productCode(itemAdapter.getProductCode())
-                    .price(itemAdapter.getPrice()).unit(getUnit(itemAdapter.getUnit()))
-                    .category(getCategory(itemAdapter.getCategory())).build();
-            var item = Item.builder().product(product).supplier(supplier)
+            // Create new item
+            Item item = Item.builder().product(getProduct(itemAdapter)).supplier(getWarehouse(itemAdapter.getSupplier()))
                     .warehouseItems(new HashSet<>()).build();
+            // Init item to ServiceHelper
             items.put(item.getProduct().getProductCode(), item);
         }
 
         return items.get(key);
+    }
+
+    public Product getProduct(ItemAdapter itemAdapter) {
+        String key = itemAdapter.getProductCode();
+
+        if (!products.containsKey(key)) {
+            //Create new product
+            Product product = Product.builder().name(itemAdapter.getName()).productCode(key)
+                    .price(itemAdapter.getPrice()).unit(getUnit(itemAdapter.getUnit()))
+                    .category(getCategory(itemAdapter.getCategory())).build();
+            //Init product to ServiceHelper
+            products.put(key, product);
+        }
+
+        return products.get(key);
     }
 
     /**
