@@ -14,7 +14,7 @@ import coffee.inventory.entity.Unit;
 import coffee.inventory.entity.Warehouse;
 import coffee.inventory.entity.WarehouseItem;
 
-public final class ServiceHelper {
+public final class PoolService {
     private Map<String, WarehouseItem> warehouseItems;
     private Map<String, Product> products;
     private Map<String, Item> items;
@@ -22,38 +22,38 @@ public final class ServiceHelper {
     private Map<String, Unit> units;
     private Map<String, Category> categories;
 
-    public ServiceHelper initWarehouses(Collection<Warehouse> initiation) {
+    public PoolService initWarehouses(Collection<Warehouse> initiation) {
         warehouses = initiation.stream().collect(Collectors.toMap(Warehouse::getId, Function.identity()));
 
         return this;
     }
 
-    public ServiceHelper initProducts(Collection<Product> initiation) {
+    public PoolService initProducts(Collection<Product> initiation) {
         products = initiation.stream().collect(Collectors.toMap(Product::getProductCode, Function.identity()));
 
         return this;
     }
 
-    public ServiceHelper initItems(Collection<Item> initiation) {
+    public PoolService initItems(Collection<Item> initiation) {
         items = initiation.stream()
                 .collect(Collectors.toMap(i -> i.getProduct().getProductCode(), Function.identity()));
         return this;
     }
 
-    public ServiceHelper initWarehouseItems(Collection<WarehouseItem> initiation) {
+    public PoolService initWarehouseItems(Collection<WarehouseItem> initiation) {
         warehouseItems = initiation.stream()
                 .collect(Collectors.toMap(i -> i.getItem().getProduct().getProductCode(), Function.identity()));
 
         return this;
     }
 
-    public ServiceHelper initUnits(Collection<Unit> initiation) {
+    public PoolService initUnits(Collection<Unit> initiation) {
         units = initiation.stream().collect(Collectors.toMap(Unit::getName, Function.identity()));
 
         return this;
     }
 
-    public ServiceHelper initCategories(Collection<Category> initiation) {
+    public PoolService initCategories(Collection<Category> initiation) {
         categories = initiation.stream().collect(Collectors.toMap(Category::getName, Function.identity()));
 
         return this;

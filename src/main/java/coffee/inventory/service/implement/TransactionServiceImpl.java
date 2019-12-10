@@ -20,7 +20,7 @@ import coffee.inventory.entity.Unit;
 import coffee.inventory.entity.Warehouse;
 import coffee.inventory.entity.WarehouseItem;
 import coffee.inventory.enumeration.ResponseStatus;
-import coffee.inventory.helper.ServiceHelper;
+import coffee.inventory.helper.PoolService;
 import coffee.inventory.repository.CategoryRepository;
 import coffee.inventory.repository.ItemRepository;
 import coffee.inventory.repository.ProductRepository;
@@ -58,13 +58,13 @@ public class TransactionServiceImpl implements TransactionService {
         }
 
         public ResponseModel saveTransaction(TransactionAdapter transactionAdapter) {
-                ServiceHelper serviceHelper = new ServiceHelper();
-                PipeLineManager initiator = new PipeLineManager(transactionAdapter, serviceHelper, this);
+                PoolService poolService = new PoolService();
+                PipeLineManager initiator = new PipeLineManager(transactionAdapter, poolService, this);
                 Creator creator = new TransactionAlgorithmsCreator();
                 creator.initData(transactionAdapter.getType(), initiator);
                 ResponseModel response = new ResponseModel();
                 response.addStatus(ResponseStatus.SUCCESS);
-                transactionRepository.saveAndFlush(transactionAdapter.build(serviceHelper));
+                transactionRepository.saveAndFlush(transactionAdapter.build(poolService));
 
                 return response.finishRequest();
         }

@@ -4,18 +4,18 @@ import java.util.Collection;
 import java.util.Objects;
 
 import coffee.inventory.adapter.ItemAdapter;
-import coffee.inventory.helper.ServiceHelper;
+import coffee.inventory.helper.PoolService;
 
 public class ItemBuilder extends TransactionBuilder {
 
-    public ItemBuilder(ServiceHelper service) {
-        super(service);
+    public ItemBuilder(PoolService poolService) {
+        super(poolService);
     }
 
     public ItemBuilder make(Collection<ItemAdapter> items) {
         items.stream()
             .filter(i -> Objects.isNull(i.getId()))
-            .forEach(helper::getItem);
+            .forEach(poolService::getItem);
 
         return this;
     }

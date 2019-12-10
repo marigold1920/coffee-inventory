@@ -3,16 +3,22 @@ package coffee.inventory.chain;
 
 import coffee.inventory.adapter.TransactionAdapter;
 import coffee.inventory.enumeration.Level;
-import coffee.inventory.helper.ServiceHelper;
+import coffee.inventory.helper.PoolService;
 import coffee.inventory.service.implement.TransactionServiceImpl;
 
 public abstract class AbstractInitiator {
     
     protected Level level;
     protected AbstractInitiator nextInitiation;
-    protected ServiceHelper helper;
+    protected PoolService poolService;
     protected TransactionAdapter transactionAdapter;
     protected TransactionServiceImpl service;
+
+    public AbstractInitiator(PoolService poolService, TransactionAdapter transactionAdapter, TransactionServiceImpl service) {
+        this.poolService = poolService;
+        this.transactionAdapter = transactionAdapter;
+        this.service = service;
+    }
 
     abstract void fetchData();
 
@@ -29,22 +35,4 @@ public abstract class AbstractInitiator {
             nextInitiation.init(level);
         }
     }
-
-    AbstractInitiator setTransactionAdapter(TransactionAdapter transactionAdapter) {
-        this.transactionAdapter = transactionAdapter;
-
-        return this;
-    } 
-
-    AbstractInitiator setServiceHelper(ServiceHelper serviceHelper) {
-        this.helper = serviceHelper;
-
-        return this;
-    }
-    
-    AbstractInitiator setService(TransactionServiceImpl service) {
-        this.service = service;
-
-        return this;
-    } 
 }

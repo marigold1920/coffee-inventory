@@ -8,20 +8,20 @@ import java.util.stream.Stream;
 import coffee.inventory.adapter.TransactionAdapter;
 import coffee.inventory.chain.AbstractInitiator;
 import coffee.inventory.enumeration.Level;
-import coffee.inventory.helper.ServiceHelper;
+import coffee.inventory.helper.PoolService;
 import coffee.inventory.service.implement.TransactionServiceImpl;
 
 public class PipeLineManager {
     private Collection<AbstractInitiator> initiators = new LinkedList<>();
 
-    public PipeLineManager(TransactionAdapter transactionAdapter, ServiceHelper serviceHelper, TransactionServiceImpl service) {
+    public PipeLineManager(TransactionAdapter transactionAdapter, PoolService poolService, TransactionServiceImpl service) {
         initiators.addAll(Stream.of(
-                    new CategoryInitiator(Level.CATEGORY).setTransactionAdapter(transactionAdapter).setServiceHelper(serviceHelper).setService(service),
-                    new UnitInitiator(Level.UNIT).setTransactionAdapter(transactionAdapter).setServiceHelper(serviceHelper).setService(service),
-                    new ProductInitiator(Level.PRODUCT).setTransactionAdapter(transactionAdapter).setServiceHelper(serviceHelper).setService(service),
-                    new ItemInitiator(Level.ITEM).setTransactionAdapter(transactionAdapter).setServiceHelper(serviceHelper).setService(service),
-                    new WarehouseItemInitiator(Level.WAREHOUSEITEM).setTransactionAdapter(transactionAdapter).setServiceHelper(serviceHelper).setService(service),
-                    new WarehouseInitiator(Level.WAREHOUSE).setTransactionAdapter(transactionAdapter).setServiceHelper(serviceHelper).setService(service)
+                    new CategoryInitiator(Level.CATEGORY, poolService, transactionAdapter, service),
+                    new UnitInitiator(Level.UNIT, poolService, transactionAdapter, service),
+                    new ProductInitiator(Level.PRODUCT, poolService, transactionAdapter, service),
+                    new ItemInitiator(Level.ITEM, poolService, transactionAdapter, service),
+                    new WarehouseItemInitiator(Level.WAREHOUSEITEM, poolService, transactionAdapter, service),
+                    new WarehouseInitiator(Level.WAREHOUSE, poolService, transactionAdapter, service)
                 )
                 .sorted((h1, h2) -> Integer.compare(h1.level.getValue(), h1.level.getValue()))
                 .collect(Collectors.toList()));
