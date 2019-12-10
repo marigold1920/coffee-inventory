@@ -18,4 +18,10 @@ public class ItemAdapter implements Serializable {
     private double price;
     private int quantity;
 
+    public ItemAdapter downQuantity() {
+        quantity = 0;
+
+        return this;
+    }
+
 }

@@ -15,23 +15,12 @@ import coffee.inventory.entity.Warehouse;
 import coffee.inventory.entity.WarehouseItem;
 
 public final class ServiceHelper {
-    private static ServiceHelper helper;
     private Map<String, WarehouseItem> warehouseItems;
     private Map<String, Product> products;
     private Map<String, Item> items;
     private Map<Integer, Warehouse> warehouses;
     private Map<String, Unit> units;
     private Map<String, Category> categories;
-
-    private ServiceHelper() {
-    };
-
-    public static synchronized ServiceHelper getService() {
-        if (helper == null)
-            helper = new ServiceHelper();
-
-        return helper;
-    }
 
     public ServiceHelper initWarehouses(Collection<Warehouse> initiation) {
         warehouses = initiation.stream().collect(Collectors.toMap(Warehouse::getId, Function.identity()));

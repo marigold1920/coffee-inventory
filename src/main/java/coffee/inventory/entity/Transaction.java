@@ -2,6 +2,7 @@ package coffee.inventory.entity;
 
 import org.hibernate.annotations.GenericGenerator;
 
+import coffee.inventory.enumeration.TransactionStatus;
 import coffee.inventory.enumeration.TransactionType;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -43,8 +44,9 @@ public class Transaction implements Serializable {
     @Column(name = "date_receive")
     private LocalDate dateReceive;
 
+    @Enumerated(EnumType.STRING)
     @Column(name = "status")
-    private String status;
+    private TransactionStatus status;
 
     @OneToMany(mappedBy = "transaction", cascade = { CascadeType.PERSIST })
     @Setter
@@ -53,4 +55,9 @@ public class Transaction implements Serializable {
     @Enumerated(EnumType.STRING)
     @Column(name = "type")
     private TransactionType type;
+
+    public void setType(TransactionType type) {
+        this.type = type;
+        this.status = type == TransactionType.RECEIPT ? TransactionStatus.RECEIPTED : TransactionStatus.PROCESSING;
+    }
 }

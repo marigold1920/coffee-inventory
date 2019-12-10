@@ -3,43 +3,30 @@ package coffee.inventory.builder;
 import java.time.LocalDate;
 
 import coffee.inventory.entity.Transaction;
-import coffee.inventory.enumeration.TransactionType;
 import coffee.inventory.helper.ServiceHelper;
 
 public class TransactionBuilder {
     protected Transaction transaction;
-    protected ServiceHelper helper = ServiceHelper.getService();
+    protected ServiceHelper helper;
 
-    public TransactionBuilder() {
-        transaction = Transaction.builder().dateCreate(LocalDate.now()).status("RECEIPTED").type(TransactionType.RECEIPT).build();
+    public TransactionBuilder(ServiceHelper service) {
+        transaction = Transaction.builder().dateCreate(LocalDate.now()).build();
+        this.helper = service;
     }
 
-    /**
-     * 
-     * @return
-     */
     public ItemBuilder item() {
 
-        return new ItemBuilder();
+        return new ItemBuilder(helper);
     }
 
-    /**
-     * 
-     * @return
-     */
     public WarehouseItemBuilder warehouseItem() {
 
-        return new WarehouseItemBuilder();
+        return new WarehouseItemBuilder(helper);
     }
 
-    /**
-     * 
-     * @param itemAdapters
-     * @return
-     */
     public TransactionDetailsBuilder details() {
 
-        return new TransactionDetailsBuilder();
+        return new TransactionDetailsBuilder(helper);
     }
 
     public Transaction build() {

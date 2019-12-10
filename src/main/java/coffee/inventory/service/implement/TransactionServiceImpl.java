@@ -4,16 +4,21 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.Objects;
 import java.util.Set;
-import java.util.function.Supplier;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import coffee.inventory.adapter.ItemAdapter;
 import coffee.inventory.adapter.TransactionAdapter;
+import coffee.inventory.chain.PipeLineManager;
 import coffee.inventory.common.ResponseModel;
+import coffee.inventory.entity.Category;
+import coffee.inventory.entity.Item;
+import coffee.inventory.entity.Product;
+import coffee.inventory.entity.Unit;
+import coffee.inventory.entity.Warehouse;
+import coffee.inventory.entity.WarehouseItem;
 import coffee.inventory.enumeration.ResponseStatus;
 import coffee.inventory.helper.ServiceHelper;
 import coffee.inventory.repository.CategoryRepository;
@@ -24,6 +29,8 @@ import coffee.inventory.repository.UnitRepository;
 import coffee.inventory.repository.WarehouseItemRepository;
 import coffee.inventory.repository.WarehouseRepository;
 import coffee.inventory.service.TransactionService;
+import coffee.inventory.strategy.Creator;
+import coffee.inventory.strategy.TransactionAlgorithmsCreator;
 
 @Service
 public class TransactionServiceImpl implements TransactionService {
@@ -51,37 +58,64 @@ public class TransactionServiceImpl implements TransactionService {
         }
 
         public ResponseModel saveTransaction(TransactionAdapter transactionAdapter) {
-                ServiceHelper serviceHelper = ServiceHelper.getService();
-                init(transactionAdapter, serviceHelper);
+                ServiceHelper serviceHelper = new ServiceHelper();
+                PipeLineManager initiator = new PipeLineManager(transactionAdapter, serviceHelper, this);
+                Creator creator = new TransactionAlgorithmsCreator();
+                creator.initData(transactionAdapter.getType(), initiator);
                 ResponseModel response = new ResponseModel();
                 response.addStatus(ResponseStatus.SUCCESS);
-                transactionRepository.saveAndFlush(transactionAdapter.build());
+                transactionRepository.saveAndFlush(transactionAdapter.build(serviceHelper));
 
                 return response.finishRequest();
         }
 
-        /**
-         * 
-         * @param transactionAdapter
-         * @param serviceHelper
-         */
-        private void init(TransactionAdapter transactionAdapter, ServiceHelper serviceHelper) {
-                Collection<ItemAdapter> items = transactionAdapter.getItems();
-                Supplier<Stream<ItemAdapter>> inititation = () -> items.parallelStream().filter(i -> Objects.isNull(i.getId()));
-                Set<Integer> warehouseIds = inititation.get().map(ItemAdapter::getSupplier).distinct().collect(Collectors.toSet());
+        public Collection<Category> findAllCategoriesByName(TransactionAdapter transactionAdapter) {
+
+                // Init all categories to ServiceHelper
+                return categoryRepository.findAllByName(
+                                transactionAdapter.getItems().stream().filter(i -> Objects.isNull(i.getId()))
+                                                .map(ItemAdapter::getCategory).distinct().collect(Collectors.toList()));
+        }
+
+        public Collection<Unit> findAllUnitsByName(TransactionAdapter transactionAdapter) {
+
+                // Init all units to ServiceHelper
+                return unitRepository.findAllByName(
+                                transactionAdapter.getItems().stream().filter(i -> Objects.isNull(i.getId()))
+                                                .map(ItemAdapter::getUnit).distinct().collect(Collectors.toList()));
+        }
+
+        public Collection<Product> findAllProductsById(TransactionAdapter transactionAdapter) {
+
+                // Init all products to ServiceHelper
+                return productRepository.findAllById(transactionAdapter.getItems().stream()
+                                .map(ItemAdapter::getProductCode).distinct().collect(Collectors.toList()));
+        }
+
+        public Collection<Item> findAllItemsById(TransactionAdapter transactionAdapter) {
+
+                // Init all items to ServiceHelper
+                return itemRepository.findAllById(transactionAdapter.getItems().stream().map(ItemAdapter::getId)
+                                .distinct().collect(Collectors.toList()));
+        }
+
+        public Collection<WarehouseItem> findAllWarehouseItemsById(TransactionAdapter transactionAdapter) {
+
+                // Init all warehouse items to ServiceHelper
+                return warehouseItemRepository.findAllByItemId(transactionAdapter.getDestination(), transactionAdapter
+                                .getItems().stream().map(ItemAdapter::getId).distinct().collect(Collectors.toList()));
+        }
+
+        public Collection<Warehouse> findAllWarehouseById(TransactionAdapter transactionAdapter) {
+
+                //Load suppliers for RECEIPT transaction to ServiceHelper
+                Set<Integer> warehouseIds = transactionAdapter.getItems().stream()
+                                .filter(i -> Objects.isNull(i.getId())).map(ItemAdapter::getSupplier).distinct()
+                                .collect(Collectors.toSet());
+                //Load warehouses to ServiceHelper
                 warehouseIds.addAll(Arrays.asList(transactionAdapter.getDestination(), transactionAdapter.getSource()));
 
-                serviceHelper.initUnits(unitRepository.findAllByName(
-                                inititation.get().map(ItemAdapter::getUnit).collect(Collectors.toList())))
-                                .initCategories(categoryRepository.findAllByName(inititation.get()
-                                                .map(ItemAdapter::getCategory).distinct().collect(Collectors.toList())))
-                                .initProducts(productRepository.findAllById(inititation.get()
-                                                .map(ItemAdapter::getProductCode).distinct().collect(Collectors.toList())))
-                                .initItems(itemRepository.findAllById(
-                                                items.stream().map(ItemAdapter::getId).collect(Collectors.toList())))
-                                .initWarehouseItems(warehouseItemRepository.findAllByItemId(
-                                                transactionAdapter.getDestination(),
-                                                items.stream().map(ItemAdapter::getId).collect(Collectors.toList())))
-                                .initWarehouses(warehouseRepository.findAllById(warehouseIds));
+                // Init all warehouse items to ServiceHelper
+                return warehouseRepository.findAllById(warehouseIds);
         }
 }
