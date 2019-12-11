@@ -6,7 +6,7 @@ import coffee.inventory.enumeration.Level;
 import coffee.inventory.helper.PoolService;
 import coffee.inventory.service.implement.TransactionServiceImpl;
 
-public abstract class AbstractInitiator {
+abstract class AbstractInitiator {
     
     protected Level level;
     protected AbstractInitiator nextInitiation;
@@ -14,7 +14,7 @@ public abstract class AbstractInitiator {
     protected TransactionAdapter transactionAdapter;
     protected TransactionServiceImpl service;
 
-    public AbstractInitiator(PoolService poolService, TransactionAdapter transactionAdapter, TransactionServiceImpl service) {
+    AbstractInitiator(PoolService poolService, TransactionAdapter transactionAdapter, TransactionServiceImpl service) {
         this.poolService = poolService;
         this.transactionAdapter = transactionAdapter;
         this.service = service;
@@ -26,13 +26,5 @@ public abstract class AbstractInitiator {
         this.nextInitiation = nextInitiation;
 
         return this;
-    }
-
-    void init(Level level) {
-        if (this.level.getValue() <= level.getValue()) {
-            fetchData();
-        } else {
-            nextInitiation.init(level);
-        }
     }
 }

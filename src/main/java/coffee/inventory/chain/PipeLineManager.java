@@ -23,7 +23,7 @@ public class PipeLineManager {
                     new WarehouseItemInitiator(Level.WAREHOUSEITEM, poolService, transactionAdapter, service),
                     new WarehouseInitiator(Level.WAREHOUSE, poolService, transactionAdapter, service)
                 )
-                .sorted((h1, h2) -> Integer.compare(h1.level.getValue(), h1.level.getValue()))
+                .sorted((h1, h2) -> Integer.compare(h1.level.getValue(), h2.level.getValue()))
                 .collect(Collectors.toList()));
     }
 
