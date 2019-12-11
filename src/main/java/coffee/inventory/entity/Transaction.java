@@ -60,4 +60,11 @@ public class Transaction implements Serializable {
         this.type = type;
         this.status = type == TransactionType.RECEIPT ? TransactionStatus.RECEIPTED : TransactionStatus.PROCESSING;
     }
+
+    @PreUpdate
+    public void finishDelivery() {
+        if (status == TransactionStatus.DELIVERIED) {
+            
+        }
+    }
 }

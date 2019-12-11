@@ -19,7 +19,7 @@ public enum ResponseStatus {
         @Override
         public String getValue() {
 
-            return " may be wrong format!";
+            return "Invalid resource!";
         }
     };
 

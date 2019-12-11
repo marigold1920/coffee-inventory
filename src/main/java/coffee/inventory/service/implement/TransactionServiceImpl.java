@@ -20,6 +20,7 @@ import coffee.inventory.entity.Unit;
 import coffee.inventory.entity.Warehouse;
 import coffee.inventory.entity.WarehouseItem;
 import coffee.inventory.enumeration.ResponseStatus;
+import coffee.inventory.enumeration.TransactionStatus;
 import coffee.inventory.helper.PoolService;
 import coffee.inventory.repository.CategoryRepository;
 import coffee.inventory.repository.ItemRepository;
@@ -108,14 +109,25 @@ public class TransactionServiceImpl implements TransactionService {
 
         public Collection<Warehouse> findAllWarehouseById(TransactionAdapter transactionAdapter) {
 
-                //Load suppliers for RECEIPT transaction to ServiceHelper
+                // Load suppliers for RECEIPT transaction to ServiceHelper
                 Set<Integer> warehouseIds = transactionAdapter.getItems().stream()
                                 .filter(i -> Objects.isNull(i.getId())).map(ItemAdapter::getSupplier).distinct()
                                 .collect(Collectors.toSet());
-                //Load warehouses to ServiceHelper
+                // Load warehouses to ServiceHelper
                 warehouseIds.addAll(Arrays.asList(transactionAdapter.getDestination(), transactionAdapter.getSource()));
 
                 // Init all warehouse items to ServiceHelper
                 return warehouseRepository.findAllById(warehouseIds);
+        }
+
+        @Override
+        public ResponseModel finishTransaction(Integer transactionId, TransactionStatus status) {
+                ResponseModel response = new ResponseModel();
+                transactionRepository.finishTransaction(transactionId, status).ifPresent(t -> {
+                        response.addStatus(ResponseStatus.SUCCESS);
+                        response.addData(t);
+                });
+
+                return response;
         }
 }

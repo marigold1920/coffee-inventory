@@ -24,6 +24,7 @@ public class ResponseModel implements Serializable {
 
     public ResponseModel() {
         statuses = new ArrayList<>();
+        this.status = "FAIL";
     }
 
     public void addStatus(ResponseStatus status) {
