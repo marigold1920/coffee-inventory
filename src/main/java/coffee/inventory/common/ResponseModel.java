@@ -38,7 +38,7 @@ public class ResponseModel implements Serializable {
         message = statuses.stream()
             .map(ResponseStatus::getValue)
                 .reduce("", String::concat);
-        status = message.isBlank() ? "SUCCESS" : "BAD_DATA";
+        status = message.equals("Successfully") ? "SUCCESS" : "BAD_DATA";
             
         return this;
     }

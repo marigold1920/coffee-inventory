@@ -18,6 +18,6 @@ public class TransactionAdapter {
 
     public Transaction build(PoolService service) {
 
-        return new TransactionBuilder(service).item().make(items).warehouseItem().make(this).details().make(this).build();
+        return new TransactionBuilder(service).item().make(this).warehouseItem().make(this).details().make(this).build();
     }
 }

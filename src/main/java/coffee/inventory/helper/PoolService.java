@@ -13,6 +13,7 @@ import coffee.inventory.entity.Product;
 import coffee.inventory.entity.Unit;
 import coffee.inventory.entity.Warehouse;
 import coffee.inventory.entity.WarehouseItem;
+import coffee.inventory.enumeration.TransactionType;
 
 public final class PoolService {
     private Map<String, WarehouseItem> warehouseItems;
@@ -64,20 +65,21 @@ public final class PoolService {
         return warehouses.get(warehouseId);
     }
 
-    public WarehouseItem getWarehouseItem(ItemAdapter itemAdapter) {
+    public WarehouseItem getWarehouseItem(ItemAdapter itemAdapter, TransactionType type) {
         String key = itemAdapter.getProductCode();
+        int quantity = type == TransactionType.DELIVERY ? 0 : itemAdapter.getQuantity();
         
         if (!warehouseItems.containsKey(key)) {
             Item item = getItem(itemAdapter);
             //Create new  WarehouseItem
-            WarehouseItem warehouseItem = WarehouseItem.builder().item(item).quantity(itemAdapter.getQuantity()).build();
+            WarehouseItem warehouseItem = WarehouseItem.builder().item(item).quantity(quantity).build();
             item.addWarehouseItem(warehouseItem);
             //Init WarehouseItem to ServiceHelper
             warehouseItems.put(item.getProduct().getProductCode(), warehouseItem);
         } else {
             //Update quantity 
             WarehouseItem warehouseItem = warehouseItems.get(key);
-            warehouseItem.setQuantity(warehouseItem.getQuantity() + itemAdapter.getQuantity());
+            warehouseItem.setQuantity(warehouseItem.getQuantity() + quantity);
         }
 
         return warehouseItems.get(key);

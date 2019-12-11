@@ -5,7 +5,7 @@ public enum ResponseStatus {
         @Override
         public String getValue() {
 
-            return "";
+            return "Successfully!";
         }
     },
     RESOURCE_NOT_FOUND() {

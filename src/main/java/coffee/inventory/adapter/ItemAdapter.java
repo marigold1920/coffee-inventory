@@ -18,10 +18,8 @@ public class ItemAdapter implements Serializable {
     private double price;
     private int quantity;
 
-    public ItemAdapter downQuantity() {
-        quantity = 0;
-
+    public ItemAdapter setSupplier(Integer supplier) {
+        this.supplier = supplier;
         return this;
     }
-
 }
