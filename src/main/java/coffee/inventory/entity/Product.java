@@ -13,6 +13,7 @@ import java.util.Set;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
+@Getter
 @Table(name = "product")
 public class Product implements Serializable {
 
