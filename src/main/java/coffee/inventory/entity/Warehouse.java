@@ -37,8 +37,4 @@ public class Warehouse implements Serializable {
 
     @Column(name = "type")
     private String type;
-
-    public void addItem(Item item) {
-        items.add(item);
-    }
 }

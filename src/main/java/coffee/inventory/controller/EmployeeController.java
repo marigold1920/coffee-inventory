@@ -25,7 +25,7 @@ public class EmployeeController {
         this.request = request;
     }
 
-    @GetMapping("/get_warehouse")
+    @GetMapping("/warehouses")
     public ResponseModel getWarehouse() {
         String authorization = request.getHeader("Authorization");
         String employeeId = jwtService.getEmployeeIdFromToken(authorization);
