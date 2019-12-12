@@ -39,5 +39,5 @@ public class WarehouseItem implements Serializable {
     @Column(name = "quantity")
     @Setter
     @Getter
-    private int quantity;
+    private Integer quantity;
 }

@@ -41,7 +41,7 @@ public class Item implements Serializable {
     private Set<WarehouseItem> warehouseItems;
 
     @OneToMany(mappedBy = "item", cascade = { CascadeType.PERSIST })
-    private Set<TransactionDetail> transactionDetails;
+    private Set<TransactionDetails> transactionDetails;
 
     public void addWarehouseItem(WarehouseItem warehouseItem) {
         warehouseItems.add(warehouseItem);

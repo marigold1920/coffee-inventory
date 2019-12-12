@@ -10,7 +10,6 @@ import java.io.Serializable;
 import java.util.Set;
 
 @Entity
-@Getter
 @Table(name = "warehouse")
 public class Warehouse implements Serializable {
 
@@ -23,6 +22,7 @@ public class Warehouse implements Serializable {
     private Integer id;
 
     @Column(name = "display_name")
+    @Getter
     private String name;
 
     @OneToOne(cascade = CascadeType.ALL)
@@ -36,6 +36,7 @@ public class Warehouse implements Serializable {
     @OneToMany(mappedBy = "warehouse", cascade = { CascadeType.MERGE })
     private Set<WarehouseItem> warehouseItems;
 
+    @Column(name = "type")
     private String type;
 
     public void addItem(Item item) {

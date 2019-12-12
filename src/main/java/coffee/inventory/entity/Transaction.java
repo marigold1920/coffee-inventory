@@ -6,6 +6,7 @@ import coffee.inventory.enumeration.TransactionStatus;
 import coffee.inventory.enumeration.TransactionType;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
@@ -18,6 +19,7 @@ import java.util.Set;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
+@Getter
 @Table(name = "transaction")
 public class Transaction implements Serializable {
 
@@ -31,12 +33,12 @@ public class Transaction implements Serializable {
     @ManyToOne(fetch = FetchType.LAZY, cascade = { CascadeType.MERGE })
     @JoinColumn(name = "place_from", referencedColumnName = "id")
     @Setter
-    private Warehouse fromWareHouse;
+    private Warehouse fromWarehouse;
 
     @ManyToOne(fetch = FetchType.LAZY, cascade = { CascadeType.MERGE })
     @JoinColumn(name = "place_to", referencedColumnName = "id")
     @Setter
-    private Warehouse toWareHouse;
+    private Warehouse toWarehouse;
 
     @Column(name = "date_create")
     private LocalDate dateCreate;
@@ -50,7 +52,7 @@ public class Transaction implements Serializable {
 
     @OneToMany(mappedBy = "transaction", cascade = { CascadeType.PERSIST })
     @Setter
-    private Set<TransactionDetail> transactionDetails;
+    private Set<TransactionDetails> transactionDetails;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "type")
@@ -59,12 +61,5 @@ public class Transaction implements Serializable {
     public void setType(TransactionType type) {
         this.type = type;
         this.status = type == TransactionType.RECEIPT ? TransactionStatus.RECEIPTED : TransactionStatus.PROCESSING;
-    }
-
-    @PreUpdate
-    public void finishDelivery() {
-        if (status == TransactionStatus.DELIVERIED) {
-            
-        }
     }
 }

@@ -4,6 +4,7 @@ import org.hibernate.annotations.GenericGenerator;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
@@ -13,8 +14,9 @@ import java.io.Serializable;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
+@Getter
 @Table(name = "transaction_details")
-public class TransactionDetail implements Serializable {
+public class TransactionDetails implements Serializable {
 
     private static final long serialVersionUID = 1L;
 

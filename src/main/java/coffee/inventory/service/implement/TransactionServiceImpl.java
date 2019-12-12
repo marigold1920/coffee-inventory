@@ -123,11 +123,10 @@ public class TransactionServiceImpl implements TransactionService {
         @Override
         public ResponseModel finishTransaction(Integer transactionId, TransactionStatus status) {
                 ResponseModel response = new ResponseModel();
-                transactionRepository.finishTransaction(transactionId, status).ifPresent(t -> {
+                transactionRepository.finishTransaction(transactionId, status);
                         response.addStatus(ResponseStatus.SUCCESS);
-                        response.addData(t);
-                });
+                        // response.addData(t);
 
-                return response;
+                return response.finishRequest();
         }
 }
