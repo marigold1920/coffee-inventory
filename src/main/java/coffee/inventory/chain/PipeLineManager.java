@@ -5,7 +5,7 @@ import java.util.LinkedList;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import coffee.inventory.adapter.TransactionAdapter;
+import coffee.inventory.adapter.Adapter;
 import coffee.inventory.chain.AbstractInitiator;
 import coffee.inventory.enumeration.Level;
 import coffee.inventory.helper.PoolService;
@@ -14,14 +14,14 @@ import coffee.inventory.service.implement.TransactionServiceImpl;
 public class PipeLineManager {
     private Collection<AbstractInitiator> initiators = new LinkedList<>();
 
-    public PipeLineManager(TransactionAdapter transactionAdapter, PoolService poolService, TransactionServiceImpl service) {
+    public PipeLineManager(Adapter adapter, PoolService poolService, TransactionServiceImpl service) {
         initiators.addAll(Stream.of(
-                    new CategoryInitiator(Level.CATEGORY, poolService, transactionAdapter, service),
-                    new UnitInitiator(Level.UNIT, poolService, transactionAdapter, service),
-                    new ProductInitiator(Level.PRODUCT, poolService, transactionAdapter, service),
-                    new ItemInitiator(Level.ITEM, poolService, transactionAdapter, service),
-                    new WarehouseItemInitiator(Level.WAREHOUSEITEM, poolService, transactionAdapter, service),
-                    new WarehouseInitiator(Level.WAREHOUSE, poolService, transactionAdapter, service)
+                    new CategoryInitiator(Level.CATEGORY, poolService, adapter, service),
+                    new UnitInitiator(Level.UNIT, poolService, adapter, service),
+                    new ProductInitiator(Level.PRODUCT, poolService, adapter, service),
+                    new ItemInitiator(Level.ITEM, poolService, adapter, service),
+                    new WarehouseItemInitiator(Level.WAREHOUSEITEM, poolService, adapter, service),
+                    new WarehouseInitiator(Level.WAREHOUSE, poolService, adapter, service)
                 )
                 .sorted((h1, h2) -> Integer.compare(h1.level.getValue(), h2.level.getValue()))
                 .collect(Collectors.toList()));

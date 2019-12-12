@@ -61,5 +61,6 @@ public class Transaction implements Serializable {
     public void setType(TransactionType type) {
         this.type = type;
         this.status = type == TransactionType.RECEIPT ? TransactionStatus.RECEIPTED : TransactionStatus.PROCESSING;
+        this.dateReceive = type == TransactionType.RECEIPT ? LocalDate.now() : null;
     }
 }

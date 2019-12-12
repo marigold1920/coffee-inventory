@@ -1,4 +1,4 @@
-package coffee.inventory.strategy;
+package coffee.inventory.factory;
 
 import coffee.inventory.chain.PipeLineManager;
 import coffee.inventory.enumeration.TransactionType;
