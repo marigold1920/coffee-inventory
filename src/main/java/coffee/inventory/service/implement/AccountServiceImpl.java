@@ -6,6 +6,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import coffee.inventory.common.ResponseModel;
 import coffee.inventory.entity.Account;
+import coffee.inventory.enumeration.ResponseStatus;
 import coffee.inventory.repository.AccountRepository;
 import coffee.inventory.service.AccountService;
 import coffee.inventory.service.JwtService;
@@ -50,25 +51,24 @@ public class AccountServiceImpl implements AccountService {
     @Override
     public ResponseModel login(Account a) {
         ResponseModel response = new ResponseModel();
-        String result;
-        String httpStatus;
+        String result = null;
+        ResponseStatus status;
         
         try {
             if (checkLogin(a)) {
                 Account account = accountRepository.findAccountByUsername(a.getUsername());
                 result = jwtService.generateTokenLogin(account.getUsername(), account.getEmployee().getId());
-                httpStatus = "OK";
+                status = ResponseStatus.OK;
             } else {
-                result = "Wrong username and password";
-                httpStatus = "Bad Request";
+                status = ResponseStatus.UNAUTHENTICATE;
             }
         } catch (Exception e) {
-            result = "Server Error";
-            httpStatus = "Internal server error";
+            status = ResponseStatus.SERVER_ERROR;
         }
+        response.addStatus(status.getValue());
         response.addData(result);
 
-        return response;
+        return response.finishRequest();
     }
 
 

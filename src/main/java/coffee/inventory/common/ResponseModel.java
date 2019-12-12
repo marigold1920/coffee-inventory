@@ -16,19 +16,21 @@ public class ResponseModel implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    private String status;
+    private ResponseStatus status;
     private Object responseObject;
     private String message;
     @JsonIgnore
-    private Collection<ResponseStatus> statuses;
+    private Collection<String> errors;
 
     public ResponseModel() {
-        statuses = new ArrayList<>();
-        this.status = "FAIL";
+        errors = new ArrayList<>();
+        message = "Successfully!";
     }
 
-    public void addStatus(ResponseStatus status) {
-        statuses.add(status);
+    public void addStatus(String error) {
+        if (error.isEmpty())
+            return;
+        errors.add(error);
     }
 
     public void addData(Object object) {
@@ -36,10 +38,9 @@ public class ResponseModel implements Serializable {
     }
  
     public ResponseModel finishRequest() {
-        message = statuses.stream()
-            .map(ResponseStatus::getValue)
+        message = errors.stream()
                 .reduce("", String::concat);
-        status = message.equals("Successfully") ? "SUCCESS" : "BAD_DATA";
+        status = message.equals("Successfully!") ? ResponseStatus.SUCCESS : ResponseStatus.BAD_REQUEST;
             
         return this;
     }

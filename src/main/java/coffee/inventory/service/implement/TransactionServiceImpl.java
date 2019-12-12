@@ -19,7 +19,6 @@ import coffee.inventory.entity.Product;
 import coffee.inventory.entity.Unit;
 import coffee.inventory.entity.Warehouse;
 import coffee.inventory.entity.WarehouseItem;
-import coffee.inventory.enumeration.ResponseStatus;
 import coffee.inventory.enumeration.TransactionStatus;
 import coffee.inventory.helper.PoolService;
 import coffee.inventory.repository.CategoryRepository;
@@ -64,7 +63,6 @@ public class TransactionServiceImpl implements TransactionService {
                 Creator creator = new TransactionAlgorithmsCreator();
                 creator.initData(transactionAdapter.getType(), initiator);
                 ResponseModel response = new ResponseModel();
-                response.addStatus(ResponseStatus.SUCCESS);
                 transactionRepository.saveAndFlush(transactionAdapter.build(poolService));
 
                 return response.finishRequest();
@@ -124,8 +122,6 @@ public class TransactionServiceImpl implements TransactionService {
         public ResponseModel finishTransaction(Integer transactionId, TransactionStatus status) {
                 ResponseModel response = new ResponseModel();
                 transactionRepository.finishTransaction(transactionId, status);
-                        response.addStatus(ResponseStatus.SUCCESS);
-                        // response.addData(t);
 
                 return response.finishRequest();
         }
