@@ -10,6 +10,7 @@ import java.io.Serializable;
 import java.util.Set;
 
 @Entity
+@Getter
 @Table(name = "warehouse")
 public class Warehouse implements Serializable {
 
@@ -18,11 +19,9 @@ public class Warehouse implements Serializable {
     @Id
     @GenericGenerator(name = "generator", strategy = "increment")
     @GeneratedValue(generator = "generator")
-    @Getter
     private Integer id;
 
     @Column(name = "display_name")
-    @Getter
     private String name;
 
     @OneToOne(cascade = CascadeType.ALL)

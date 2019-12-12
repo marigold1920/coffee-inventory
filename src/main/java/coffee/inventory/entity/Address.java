@@ -2,6 +2,8 @@ package coffee.inventory.entity;
 
 import org.hibernate.annotations.GenericGenerator;
 
+import lombok.Getter;
+
 import javax.persistence.*;
 import java.io.Serializable;
 
@@ -23,5 +25,6 @@ public class Address implements Serializable {
     private Warehouse wareHouse;
 
     @Column(name = "name")
+    @Getter
     private String name;
 }

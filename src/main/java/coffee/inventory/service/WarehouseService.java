@@ -5,6 +5,7 @@ import java.util.Collection;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import coffee.inventory.common.ResponseModel;
 import coffee.inventory.entity.Warehouse;
 
 @Service
@@ -12,4 +13,5 @@ import coffee.inventory.entity.Warehouse;
 public interface WarehouseService {
     Warehouse saveWarehouse(Warehouse warehouse);    
     Collection<Warehouse> findWarehousesById(Integer... warehouseIds);
+	ResponseModel getAllWarehouses(Integer warehouseId);
 }

@@ -6,6 +6,7 @@ import java.util.Collection;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import coffee.inventory.common.ResponseModel;
 import coffee.inventory.entity.Warehouse;
 import coffee.inventory.repository.WarehouseRepository;
 import coffee.inventory.service.WarehouseService;
@@ -15,9 +16,6 @@ public class WarehouseServiceImpl implements WarehouseService {
 
     private WarehouseRepository warehouseRepository;
 
-    /**
-     * @param warehouseRepository the warehouseRepository to set
-     */
     @Autowired
     public void setWarehouseRepository(WarehouseRepository warehouseRepository) {
         this.warehouseRepository = warehouseRepository;
@@ -31,5 +29,13 @@ public class WarehouseServiceImpl implements WarehouseService {
     public Collection<Warehouse> findWarehousesById(Integer... warehouseIds) {
 
         return warehouseRepository.findAllById(Arrays.asList(warehouseIds));
+    }
+
+    @Override
+    public ResponseModel getAllWarehouses(Integer warehouseId) {
+        ResponseModel response = new ResponseModel();
+        response.addData(warehouseRepository.findAllWarehouses(warehouseId));
+
+        return response.finishRequest();
     }
 }
