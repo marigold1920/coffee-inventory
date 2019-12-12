@@ -11,7 +11,7 @@ import coffee.inventory.common.ResponseModel;
 import coffee.inventory.service.WarehouseService;
 
 @RestController
-@RequestMapping(value = "api/v1.0/warehouses", consumes = { MediaType.APPLICATION_JSON_VALUE }, produces = { MediaType.APPLICATION_JSON_VALUE } )
+@RequestMapping(value = "api/v1.0", consumes = { MediaType.APPLICATION_JSON_VALUE }, produces = { MediaType.APPLICATION_JSON_VALUE } )
 public class WarehouseController {
 
     private WarehouseService warehouseService;
@@ -21,9 +21,15 @@ public class WarehouseController {
         this.warehouseService = warehouseService;
     }
 
-    @GetMapping
+    @GetMapping(value = "warehouses")
     public ResponseModel getAllWarehouses(@RequestParam Integer warehouseId) {
         
         return warehouseService.getAllWarehouses(warehouseId);
+    }
+
+    @GetMapping("suppliers")
+    public ResponseModel getAllSuppliers() {
+        
+        return warehouseService.getAllSuppliers();
     }
 }

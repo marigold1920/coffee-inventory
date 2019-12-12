@@ -2,6 +2,8 @@ package coffee.inventory.entity;
 
 import org.hibernate.annotations.GenericGenerator;
 
+import lombok.Getter;
+
 import javax.persistence.*;
 import java.io.Serializable;
 import java.time.LocalDate;
@@ -15,6 +17,7 @@ public class Employee implements Serializable {
     @Id
     @GenericGenerator(name = "generator", strategy = "increment")
     @GeneratedValue(generator = "generator")
+    @Getter
     private Integer id;
 
     @Column(name = "first_name")
@@ -32,7 +35,8 @@ public class Employee implements Serializable {
 
     @ManyToOne(fetch = FetchType.LAZY, cascade = { CascadeType.MERGE })
     @JoinColumn(name = "warehouse_id", referencedColumnName = "id")
-    private Warehouse wareHouse;
+    @Getter
+    private Warehouse warehouse;
 
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "account_id", referencedColumnName = "id")

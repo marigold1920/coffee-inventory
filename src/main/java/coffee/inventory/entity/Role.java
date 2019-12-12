@@ -2,6 +2,8 @@ package coffee.inventory.entity;
 
 import org.hibernate.annotations.GenericGenerator;
 
+import lombok.Getter;
+
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Set;
@@ -18,6 +20,7 @@ public class Role implements Serializable {
     private Integer id;
 
     @Column(name = "role_name")
+    @Getter
     private String roleName;
 
     @OneToMany(mappedBy = "roles")

@@ -14,4 +14,5 @@ public interface WarehouseService {
     Warehouse saveWarehouse(Warehouse warehouse);    
     Collection<Warehouse> findWarehousesById(Integer... warehouseIds);
 	ResponseModel getAllWarehouses(Integer warehouseId);
+	ResponseModel getAllSuppliers();
 }

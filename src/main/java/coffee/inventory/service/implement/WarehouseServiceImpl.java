@@ -38,4 +38,12 @@ public class WarehouseServiceImpl implements WarehouseService {
 
         return response.finishRequest();
     }
+
+    @Override
+    public ResponseModel getAllSuppliers() {
+        ResponseModel response = new ResponseModel();
+        response.addData(warehouseRepository.findAllSuppliers());
+        
+        return response;
+    }
 }

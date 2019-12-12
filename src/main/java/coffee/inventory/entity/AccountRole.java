@@ -18,11 +18,11 @@ public class AccountRole implements Serializable {
     @GeneratedValue(generator = "generator")
     private int id;
 
-    @ManyToOne(fetch = FetchType.LAZY, cascade = { CascadeType.MERGE })
+    @ManyToOne( cascade = { CascadeType.MERGE })
     @JoinColumn(name = "account_id", referencedColumnName = "id")
     private Account accounts;
 
-    @ManyToOne(fetch = FetchType.LAZY, cascade = { CascadeType.MERGE })
+    @ManyToOne(fetch = FetchType.EAGER, cascade = { CascadeType.MERGE })
     @JoinColumn(name = "role_id", referencedColumnName = "id")
     private Role roles;
 }
