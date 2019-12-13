@@ -9,7 +9,6 @@ import java.time.LocalDate;
 import java.util.Set;
 
 @Getter
-@Setter
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
@@ -23,14 +22,14 @@ public class Stocktaking implements Serializable {
     @GeneratedValue(generator = "generator")
     private int id;
 
-    @ManyToOne(fetch = FetchType.LAZY, cascade = { CascadeType.MERGE })
+    @ManyToOne(fetch = FetchType.LAZY, cascade = { CascadeType.MERGE, CascadeType.PERSIST })
     @JoinColumn(name = "warehouse_id", referencedColumnName = "id")
     private Warehouse warehouse;
 
     @Column(name = "date")
     private LocalDate date;
 
-    @OneToMany(mappedBy = "stockTaking", cascade = { CascadeType.PERSIST })
-    private Set<StocktakingDetails> stockTakingDetails;
-
+    @OneToMany(mappedBy = "stocktaking", cascade = { CascadeType.PERSIST })
+    @Setter
+    private Set<StocktakingDetails> stocktakingDetails;
 }

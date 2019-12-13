@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 import coffee.inventory.adapter.TransactionAdapter;
 import coffee.inventory.common.ResponseModel;
 import coffee.inventory.enumeration.TransactionStatus;
+import coffee.inventory.service.ServiceHelper;
 import coffee.inventory.service.TransactionService;
 import coffee.inventory.service.implement.TransactionServiceImpl;
 
@@ -21,15 +22,21 @@ import coffee.inventory.service.implement.TransactionServiceImpl;
 public class TransactionController {
 
     private TransactionService transactionService;
+    private ServiceHelper serviceHelper;
 
     @Autowired
     public TransactionController(TransactionServiceImpl transactionService) {
         this.transactionService = transactionService;
     }
 
+    @Autowired
+    public void setServiceHelper(ServiceHelper serviceHelper) {
+        this.serviceHelper = serviceHelper;
+    }
+
     @PostMapping
     public ResponseModel saveTransaction(@RequestBody TransactionAdapter transactionAdapter) {
-        ResponseModel response = transactionService.saveTransaction(transactionAdapter);
+        ResponseModel response = transactionService.saveTransaction(transactionAdapter, serviceHelper);
 
         return response;
     }

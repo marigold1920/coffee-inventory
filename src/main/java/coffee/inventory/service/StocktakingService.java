@@ -1,10 +1,10 @@
 package coffee.inventory.service;
 
-import coffee.inventory.adapter.StocktakingAdapter;
+import coffee.inventory.adapter.Adapter;
 import coffee.inventory.common.ResponseModel;
 
 public interface StocktakingService {
 
-	ResponseModel saveStocktaking(StocktakingAdapter stocktakingAdapter);
+	ResponseModel saveStocktaking(Adapter stocktakingAdapter, ServiceHelper service);
     
 }

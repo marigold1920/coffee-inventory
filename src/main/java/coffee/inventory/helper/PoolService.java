@@ -41,10 +41,14 @@ public final class PoolService {
         return this;
     }
 
-    public PoolService initWarehouseItems(Collection<WarehouseItem> initiation) {
-        warehouseItems = initiation.stream()
-                .collect(Collectors.toMap(i -> i.getItem().getProduct().getProductCode(), Function.identity()));
-
+    public PoolService initWarehouseItems(Collection<WarehouseItem> initiation, TransactionType type) {
+        if (type == TransactionType.STOCKTAKING) {
+            warehouseItems = initiation.stream()
+                    .collect(Collectors.toMap(i -> String.valueOf(i.getId()), Function.identity()));
+        } else {
+            warehouseItems = initiation.stream()
+                    .collect(Collectors.toMap(i -> i.getItem().getProduct().getProductCode(), Function.identity()));
+        }
         return this;
     }
 
@@ -63,6 +67,10 @@ public final class PoolService {
     public Warehouse getWarehouse(Integer warehouseId) {
 
         return warehouses.get(warehouseId);
+    }
+
+    public WarehouseItem getWarehouseitemById(Integer warehouseItemId) {
+        return warehouseItems.get(String.valueOf(warehouseItemId));
     }
 
     public WarehouseItem getWarehouseItem(ItemAdapter itemAdapter, TransactionType type) {

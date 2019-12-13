@@ -3,6 +3,8 @@ package coffee.inventory.entity;
 import lombok.*;
 import org.hibernate.annotations.GenericGenerator;
 
+import coffee.inventory.enumeration.StocktakingStatus;
+
 import javax.persistence.*;
 import java.io.Serializable;
 
@@ -24,21 +26,27 @@ public class StocktakingDetails implements Serializable {
     @Column(name = "new_quantity")
     private int newQuantity;
 
+    @Enumerated(EnumType.STRING)
+    @Column(name = "status")
+    private StocktakingStatus status;
+
     @Column(name = "note")
     private String note;
-
-    @Column(name = "status")
-    private String status;
 
     @Column(name = "old_quantity")
     private int oldQuantity;
 
     @ManyToOne(fetch = FetchType.LAZY, cascade = { CascadeType.PERSIST })
     @JoinColumn(name = "stocktaking_id", referencedColumnName = "id")
-    private Stocktaking stockTaking;
+    private Stocktaking stocktaking;
 
-    @ManyToOne(fetch = FetchType.LAZY, cascade = { CascadeType.PERSIST })
+    @ManyToOne(fetch = FetchType.LAZY, cascade = { CascadeType.MERGE, CascadeType.PERSIST })
     @JoinColumn(name = "warehouseitem_id", referencedColumnName = "id")
-    private WarehouseItem wareHouseItem;
+    private WarehouseItem warehouseItem;
 
+    @PrePersist
+    private void updateWarehouseItemQuantity() {
+        oldQuantity = warehouseItem.getQuantity();
+        warehouseItem.setQuantity(newQuantity);
+    }
 }

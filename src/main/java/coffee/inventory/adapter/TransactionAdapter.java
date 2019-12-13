@@ -1,5 +1,6 @@
 package coffee.inventory.adapter;
 
+import java.io.Serializable;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
@@ -13,8 +14,9 @@ import coffee.inventory.helper.PoolService;
 import lombok.Getter;
 
 @Getter
-public class TransactionAdapter implements Adapter {
+public class TransactionAdapter implements Adapter, Serializable {
 
+    private static final long serialVersionUID = 1L;
     private int source;
     private int destination;
     private Collection<ItemAdapter> items;
@@ -26,7 +28,7 @@ public class TransactionAdapter implements Adapter {
     }
 
     @Override
-    public Integer getWarehouseId() {
+    public Integer getWarehouse() {
         return destination;
     }
 

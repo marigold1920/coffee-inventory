@@ -9,12 +9,12 @@ import coffee.inventory.adapter.Adapter;
 import coffee.inventory.chain.AbstractInitiator;
 import coffee.inventory.enumeration.Level;
 import coffee.inventory.helper.PoolService;
-import coffee.inventory.service.implement.TransactionServiceImpl;
+import coffee.inventory.service.ServiceHelper;
 
 public class PipeLineManager {
     private Collection<AbstractInitiator> initiators = new LinkedList<>();
 
-    public PipeLineManager(Adapter adapter, PoolService poolService, TransactionServiceImpl service) {
+    public PipeLineManager(Adapter adapter, PoolService poolService, ServiceHelper service) {
         initiators.addAll(Stream.of(
                     new CategoryInitiator(Level.CATEGORY, poolService, adapter, service),
                     new UnitInitiator(Level.UNIT, poolService, adapter, service),

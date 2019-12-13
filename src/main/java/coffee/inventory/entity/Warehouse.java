@@ -32,6 +32,10 @@ public class Warehouse implements Serializable {
     @Setter
     private Set<Item> items;
 
+    // @OneToMany(mappedBy = "warehouse", cascade = { CascadeType.PERSIST, CascadeType.MERGE })
+    // @Setter
+    // private Set<Stocktaking> stocktakings;
+
     @OneToMany(mappedBy = "warehouse", cascade = { CascadeType.MERGE })
     private Set<WarehouseItem> warehouseItems;
 

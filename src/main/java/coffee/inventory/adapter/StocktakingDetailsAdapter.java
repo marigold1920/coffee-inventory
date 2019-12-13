@@ -7,11 +7,10 @@ import java.io.Serializable;
 import coffee.inventory.enumeration.StocktakingStatus;
 
 @Getter
-@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class StocktakingDetailsAdapter implements Serializable{
+public class StocktakingDetailsAdapter implements Serializable {
 
     private static final long serialVersionUID = 1L;
 

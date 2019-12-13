@@ -16,9 +16,12 @@ public interface Adapter {
         return Collections.emptySet();
     }
 
-    Object build(PoolService poolService);
+    public default Object build(PoolService poolService) {
 
-    public default Integer getWarehouseId() {
+        return null;
+    }
+
+    public default Integer getWarehouse() {
 
         return null;
     }

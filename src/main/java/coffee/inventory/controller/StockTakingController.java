@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import coffee.inventory.adapter.StocktakingAdapter;
 import coffee.inventory.common.ResponseModel;
+import coffee.inventory.service.ServiceHelper;
 import coffee.inventory.service.StocktakingService;
 
 @RestController
@@ -16,6 +17,12 @@ import coffee.inventory.service.StocktakingService;
 public class StockTakingController {
 
     private StocktakingService stocktakingService;
+    private ServiceHelper serviceHelper;
+
+    @Autowired
+    public void setServiceHelper(ServiceHelper serviceHelper) {
+        this.serviceHelper = serviceHelper;
+    }
 
     @Autowired
     public void setStocktakingService(StocktakingService stocktakingService) {
@@ -25,6 +32,6 @@ public class StockTakingController {
     @PostMapping
     public ResponseModel saveStocktaking(@RequestBody StocktakingAdapter stocktakingAdapter) {
         
-        return stocktakingService.saveStocktaking(stocktakingAdapter);
+        return stocktakingService.saveStocktaking(stocktakingAdapter, serviceHelper);
     }
 }

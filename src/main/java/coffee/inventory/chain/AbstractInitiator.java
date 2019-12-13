@@ -4,7 +4,7 @@ package coffee.inventory.chain;
 import coffee.inventory.adapter.Adapter;
 import coffee.inventory.enumeration.Level;
 import coffee.inventory.helper.PoolService;
-import coffee.inventory.service.implement.TransactionServiceImpl;
+import coffee.inventory.service.ServiceHelper;
 
 abstract class AbstractInitiator {
     
@@ -12,9 +12,9 @@ abstract class AbstractInitiator {
     protected AbstractInitiator nextInitiation;
     protected PoolService poolService;
     protected Adapter data;
-    protected TransactionServiceImpl service;
+    protected ServiceHelper service;
 
-    AbstractInitiator(PoolService poolService, Adapter adapter, TransactionServiceImpl service) {
+    AbstractInitiator(PoolService poolService, Adapter adapter, ServiceHelper service) {
         this.poolService = poolService;
         this.data = adapter;
         this.service = service;

@@ -10,6 +10,8 @@ public class TransactionAlgorithmsCreator extends Creator {
             return new ReceiptAlgorithms();
         case DELIVERY:
             return new DeliveryAlgorithms();
+        case STOCKTAKING:
+            return new StocktakingAlgorithms();
         default:
             return new ReceiptAlgorithms();
         }
